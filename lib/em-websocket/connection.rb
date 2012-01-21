@@ -1,5 +1,3 @@
-require 'addressable/uri'
-
 module EventMachine
   module WebSocket
     class Connection < EventMachine::Connection
@@ -128,7 +126,7 @@ module EventMachine
           end
           # This labels the encoding as binary so that it can be combined with
           # the BINARY framing
-          data.force_encoding("BINARY")
+          data.force_encoding("ASCII-8BIT")
         else
           # TODO: Check that data is valid UTF-8
         end

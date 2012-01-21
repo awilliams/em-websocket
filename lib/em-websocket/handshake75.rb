@@ -2,8 +2,7 @@ module EventMachine
   module WebSocket
     module Handshake75
       def handshake
-        location  = "#{request['host'].scheme}://#{request['host'].host}"
-        location << ":#{request['host'].port}" if request['host'].port
+        location  = "ws://#{request['host']}"
         location << request['path']
 
         upgrade =  "HTTP/1.1 101 Web Socket Protocol Handshake\r\n"

@@ -10,8 +10,7 @@ module EventMachine
           request['third-key']
         )
 
-        location  = "#{request['host'].scheme}://#{request['host'].host}"
-        location << ":#{request['host'].port}" if request['host'].port
+        location  = "ws://#{request['host']}"
         location << request['path']
 
         upgrade =  "HTTP/1.1 101 WebSocket Protocol Handshake\r\n"

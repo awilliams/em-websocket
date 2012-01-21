@@ -25,8 +25,6 @@ module EventMachine
           raise HandshakeError, "Must be GET request"
         end
 
-        # extract query string values
-        request['query'] = Addressable::URI.parse(request['path']).query_values ||= {}
         # extract remaining headers
         lines.each do |line|
           h = HEADER.match(line)
@@ -70,10 +68,6 @@ module EventMachine
         unless request['connection'] && request['connection'] =~ /Upgrade/ && request['upgrade'] && request['upgrade'].downcase == 'websocket'
           raise HandshakeError, "Connection and Upgrade headers required"
         end
-
-        # transform headers
-        protocol = (secure ? "wss" : "ws")
-        request['host'] = Addressable::URI.parse("#{protocol}://"+request['host'])
 
         case version
         when 75

@@ -1,4 +1,4 @@
-# encoding: BINARY
+# encoding: ASCII-8BIT
 
 module EventMachine
   module WebSocket
