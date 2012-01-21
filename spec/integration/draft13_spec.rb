@@ -47,19 +47,48 @@ describe "draft13" do
 
   it "should send back the correct handshake response" do
     em {
-      EM.add_timer(0.1) do
-        EventMachine::WebSocket.start(:host => "0.0.0.0", :port => 12345) { }
-        
-        # Create a fake client which sends draft 07 handshake
-        connection = EM.connect('0.0.0.0', 12345, Draft07FakeWebSocketClient)
-        connection.send_data(format_request(@request))
-        
-        connection.onopen {
-          connection.handshake_response.lines.sort.
-            should == format_response(@response).lines.sort
+      EventMachine::WebSocket.start(:host => "0.0.0.0", :port => 12345) { }
+
+      # Create a fake client which sends draft 13 handshake
+      connection = EM.connect('0.0.0.0', 12345, Draft07FakeWebSocketClient)
+      connection.send_data(format_request(@request))
+
+      connection.onopen {
+        connection.handshake_response.lines.sort.
+          should == format_response(@response).lines.sort
+        done
+      }
+    }
+  end
+
+  # TODO: This test would be much nicer with a real websocket client...
+  it "should support sending pings and binding to onpong" do
+    em {
+      EventMachine::WebSocket.start(:host => "0.0.0.0", :port => 12345) { |ws|
+        ws.onopen {
+          ws.should be_pingable
+          EM.next_tick {
+            ws.ping('hello').should == true
+          }
+
+        }
+        ws.onpong { |data|
+          data.should == 'hello'
           done
         }
-      end
+      }
+
+      # Create a fake client which sends draft 13 handshake
+      connection = EM.connect('0.0.0.0', 12345, Draft07FakeWebSocketClient)
+      connection.send_data(format_request(@request))
+
+      # Confusing, fake onmessage means any data after the handshake
+      connection.onmessage { |data|
+        # This is what a ping looks like
+        data.should == "\x89\x05hello"
+        # This is what a pong looks like
+        connection.send_data("\x8a\x05hello")
+      }
     }
   end
 end

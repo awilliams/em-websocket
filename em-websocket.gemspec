@@ -20,9 +20,9 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
   s.add_dependency("eventmachine", ">= 0.12.9")
-  s.add_development_dependency('em-spec', '~> 0.2.5')
+  s.add_development_dependency('em-spec', '~> 0.2.6')
   s.add_development_dependency("eventmachine", "~> 0.12.10")
   s.add_development_dependency('em-http-request', '~> 0.2.6')
-  s.add_development_dependency('rspec', "~> 2.6.0")
+  s.add_development_dependency('rspec', "~> 2.8.0")
   s.add_development_dependency('rake')
 end
