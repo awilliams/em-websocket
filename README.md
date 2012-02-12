@@ -1,3 +1,5 @@
+This particular fork is used with [Ruby OpenWrt](https://github.com/awilliams/ruby-openwrt)
+
 # EM-WebSocket
 
 EventMachine based, async, Ruby WebSocket server. Take a look at examples directory, or check out the blog post below:
